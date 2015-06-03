@@ -1,5 +1,7 @@
 # Ruby Zeus Client
 
+![Alt text](/icons/zeus-logo.png?raw=true "Zeus Logo")
+
 Ruby client for [Cisco Zeus](http://www.ciscozeus.io/). This allows us to send and recieve data to and from Zeus.
 
 ## Installation
