@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in zeusclient.gemspec
+# Specify your gem's dependencies in zeus.gemspec
 gemspec
+gem 'rest_client'
