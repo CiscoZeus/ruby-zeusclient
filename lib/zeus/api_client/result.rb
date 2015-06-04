@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 # Copyright 2015 Cisco Systems, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require "bundler/setup"
-require "zeus/api_client"
+module Zeus
+  class APIClient
+    class Result
 
-# You can add fixtures and/or initialization code here to make experimenting
-# with your gem easier. You can also use a different console, if you like.
+      def initialize(response)
+        @response = response
+      end
 
-# (If you use this, don't forget to add pry to your Gemfile!)
-# require "pry"
-# Pry.start
+      def success?
+        @response.code == 200 || @response.code == 201
+      end
 
-require "irb"
-IRB.start
+      def error?
+        !self.success?
+      end
+
+      def data
+        JSON.parse(@response)
+      end
+
+      def header
+        @response.headers
+      end
+
+    end
+  end
+end
+
