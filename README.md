@@ -32,22 +32,41 @@ zeus_client = Zeus::APIClient.new({
 List All Metrics
 ```ruby
 result = zeus_client.list_metrics()
-p result.code  # 200
-p result.data  # => {}
+p result.code      # 200
+p result.success?  # true
+p result.data      # => {}
 ```
 
 Get Metric
 ```ruby
 result = zeus_client.get_metrics()
-p result.code  # 200
-p result.data  # => {}
+p result.code      # 200
+p result.success?  # true
+p result.data      # => {}
 ```
 
 Delete metric
 ```ruby
 result = zeus_client.delete_metrics()
-p result.code  # 200
-p result.data  # => {}
+p result.code      # 200
+p result.success?  # true
+p result.data      # => {}
+```
+
+Get logs
+```ruby
+result = zeus_client.get_logs("log_name_here")
+p result.code      # 200
+p result.success?  # true
+p result.data      # => {}
+```
+
+Push logs
+```ruby
+result = zeus_client.send_logs([{},{}, ...])
+p result.code      # 200
+p result.success?  # true
+p result.data      # => {}
 ```
 
 ## Development
