@@ -20,42 +20,53 @@ module Zeus
 
   class APIClient
 
-    def initialize(access_token, endpoint=nil)
-      @access_token = access_token
-      @endpoint = endpoint || "http://api.ciscozeus.io"
+    def initialize(opts={})
+      @access_token = opts[:access_token]
+      @endpoint = opts[:endpoint] || "http://api.ciscozeus.io"
     end
 
     def list_metrics(regex=nil, from_date=nil, to_date=nil, aggregator=nil, group_interval=nil, filter_condition=nil, limit=nil)
-      params = {
-          metric_name: regex||"",
-          from: from_date||"",
-          to: to_date||"",
-          aggregator_function: aggregator||"",
-          group_interval: group_interval||"",
-          filter_condition: filter_condition||"",
-          limit: limit||50
-      }
-      response = self.get("/metrics/#{@access_token}/_names/", params)
-      Result.new(response)
+      params = {}
+      params['metric_name']         = regex            if regex
+      params['from']                = from_date        if from_date
+      params['to']                  = to_date          if to_date
+      params['aggregator_function'] = aggregator       if aggregator
+      params['group_interval']      = group_interval   if group_interval
+      params['filter_condition']    = filter_condition if filter_condition
+      params['limit']               = limit            if limit
+      begin
+        response = self.get("/metrics/#{@access_token}/_names/", params)
+        Result.new(response)
+      rescue => e
+        Result.new(e.response)
+      end
     end
 
-    # test needed
     def send_metrics(name, metrics)
-      self.post("/metrics/#{@access_token}/#{name}/", {metrics: metrics})
+      params = {metrics: metrics}
+      begin
+        response = self.post("/metrics/#{@access_token}/#{name}/", params)
+        Result.new(response)
+      rescue => e
+        Result.new(e.response)
+      end
     end
 
     def get_metrics(regex=nil, from_date=nil, to_date=nil, aggregator=nil, group_interval=nil, filter_condition=nil, limit=nil)
-      params = {
-          metric_name: regex||"",
-          from: from_date||"",
-          to: to_date||"",
-          aggregator_function: aggregator||"",
-          group_interval: group_interval||"",
-          filter_condition: filter_condition||"",
-          limit: limit||50
-      }
-      response = self.get("/metrics/#{@access_token}/_values/", params)
-      Result.new(response)
+      params = {}
+      params['metric_name']         = regex            if regex
+      params['from']                = from_date        if from_date
+      params['to']                  = to_date          if to_date
+      params['aggregator_function'] = aggregator       if aggregator
+      params['group_interval']      = group_interval   if group_interval
+      params['filter_condition']    = filter_condition if filter_condition
+      params['limit']               = limit            if limit
+      begin
+        response = self.get("/metrics/#{@access_token}/_values/", params)
+        Result.new(response)
+      rescue => e
+        Result.new(e.response)
+      end
     end
 
     def delete_metrics(name)
@@ -64,21 +75,28 @@ module Zeus
     end
 
     def send_logs(name, logs)
-      response = self.post("/logs/#{@access_token}/#{name}/", {logs:logs})
-      Result.new(response)
+      params = {logs:logs}
+      begin
+        response = self.post("/logs/#{@access_token}/#{name}/", params)
+        Result.new(response)
+      rescue => e
+        Result.new(e.response)
+      end
     end
 
     def get_logs(name, pattern=nil, from_date=nil, to_date=nil, offset=nil, limit=nil)
-      params = {
-          log_name: name,
-          pattern: pattern||"*",
-          from: from_date||0,
-          to: to_date||100_000_000_000, # this might need to modify server side implementation
-          offset: offset||0,
-          limit: limit||50
-      }
-      response = self.get("/logs/#{@access_token}", params)
-      Result.new(response)
+      params = {log_name: name}  # required fields
+      params['pattern'] = pattern   if pattern
+      params['from']    = from_date if from_date
+      params['to']      = to_date   if to_date
+      params['offset']  = offset    if offset
+      params['limit']   = limit     if limit
+      begin
+        response = self.get("/logs/#{@access_token}", params)
+        Result.new(response)
+      rescue => e
+        Result.new(e.response)
+      end
     end
 
     def get(path, params={})
@@ -86,6 +104,8 @@ module Zeus
     end
 
     def post(path, data={})
+      p "#{@endpoint}#{path}"
+      p data
       RestClient.post "#{@endpoint}#{path}", data.to_json, :content_type => :json, :accept => :json
     end
 

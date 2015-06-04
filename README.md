@@ -24,6 +24,30 @@ Or install it yourself as:
 
 ```ruby
 require 'zeus/api_client'
+zeus_client = Zeus::APIClient.new({
+    :access_token => "your_token_here"
+})
+```
+
+List All Metrics
+```ruby
+result = zeus_client.list_metrics()
+p result.code  # 200
+p result.data  # => {}
+```
+
+Get Metric
+```ruby
+result = zeus_client.get_metrics()
+p result.code  # 200
+p result.data  # => {}
+```
+
+Delete metric
+```ruby
+result = zeus_client.delete_metrics()
+p result.code  # 200
+p result.data  # => {}
 ```
 
 ## Development
