@@ -1,0 +1,2 @@
+gem build zeusclient.gemspec
+gem install zeusclient
