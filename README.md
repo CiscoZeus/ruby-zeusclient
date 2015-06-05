@@ -77,6 +77,8 @@ p result.success?  # true
 p result.data      # => {}
 ```
 
+For more details, refer to [this documentation](http://www.rubydoc.info/github/CiscoZeus/ruby-zeusclient/)
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
