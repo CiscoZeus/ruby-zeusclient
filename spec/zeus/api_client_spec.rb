@@ -23,53 +23,76 @@ describe Zeus::APIClient do
     })
   end
 
-  describe 'Log related functions' do
+  describe 'Log' do
     describe '#get_logs' do
-      describe 'forwards option values correctly' do
+      describe 'request logs' do
         context 'without any option values' do
-          it 'forwards only log name field' do
-            true.should == true
+          it 'has only log name field' do
+            mock_get = double('ApiClient::get')
+            expect(zeus_client).to receive(:get).and_return(mock_get).once
+            # .with(:path => "/logs/fake_access_token/", :params => {:name => "fake_name"})
+            zeus_client.get_logs('fake_name')
           end
         end
         context 'with some option values' do
-          it 'forwards only name and given option values' do
-            true.should == true
+          it 'has given option fields' do
+            mock_get = double('ApiClient::get')
+            expect(zeus_client).to receive(:get).and_return(mock_get).once
+            # .with(:path => "/logs/fake_access_token/", :params => {:name => "fake_name", ....})
+            zeus_client.get_logs(
+                'fake_name', 'fake_attribute_name', 'fake_pattern',
+                'fake_from_date', 'fake_to_date', 'fake_offset', 'fake_limit')
           end
         end
       end
     end
 
     describe '#send_logs' do
-      describe 'forwards logs correctly' do
-        it '' do
-          true.should == true
+      describe 'send logs' do
+        it 'request posting logs' do
+          mock_post = double('ApiClient::post')
+          expect(zeus_client).to receive(:post).and_return(mock_post).once
+          # TODO: parameter check
+          zeus_client.send_logs('fake_name', [])
         end
       end
     end
   end
 
-  describe 'Metrics related functions' do
+  describe 'Metrics' do
     describe '#list_metrics' do
-      it '' do
-        true.should == true
+      it 'request the list of metrics' do
+        mock_get = double('ApiClient::get')
+        expect(zeus_client).to receive(:get).and_return(mock_get).once
+        # TODO: parameter check
+        zeus_client.list_metrics
       end
     end
 
     describe '#send_metrics' do
-      it '' do
-        true.should == true
+      it 'send metrics' do
+        mock_post = double('ApiClient::post')
+        expect(zeus_client).to receive(:post).and_return(mock_post).once
+        # TODO: parameter check
+        zeus_client.send_metrics('fake_name', [])
       end
     end
 
     describe '#get_metrics' do
-      it '' do
-        true.should == true
+      it 'request get metrics' do
+        mock_get = double('ApiClient::get')
+        expect(zeus_client).to receive(:get).and_return(mock_get).once
+        # TODO: parameter check
+        zeus_client.get_metrics
       end
     end
 
     describe '#delete_metrics' do
-      it '' do
-        true.should == true
+      it 'request delete metrics' do
+        mock_delete = double('ApiClient::delete')
+        expect(zeus_client).to receive(:delete).and_return(mock_delete).once
+        # TODO: parameter check
+        zeus_client.delete_metrics('fake_name')
       end
     end
 
