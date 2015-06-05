@@ -25,12 +25,12 @@ Gem::Specification.new do |spec|
   spec.email         = ["komei.t.f@gmail.com"]
 
   if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com' to prevent pushes to rubygems.org, or delete to allow pushes to any server."
+    # spec.metadata['allowed_push_host'] = 'http://mygemserver.com'
   end
 
   spec.summary       = %q{Ruby Client for Cisco Zeus}
-  spec.description   = %q{}
-  spec.homepage      = "http://ciscozeus.io"
+  spec.description   = %q{Client for Cisco Zeus. This allows users to send and receive data to and from Cisco Zeus.}
+  spec.homepage      = "https://github.com/CiscoZeus/ruby-zeusclient"
   spec.license       = "Apache 2.0"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features|icons)/}) }
