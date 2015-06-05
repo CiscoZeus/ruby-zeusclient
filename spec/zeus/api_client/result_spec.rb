@@ -17,6 +17,6 @@ require 'zeus/api_client'
 
 describe Zeus::APIClient::Result do
   it 'should have spec' do
-    true.should == true
+    expect(true).to eq true
   end
 end
