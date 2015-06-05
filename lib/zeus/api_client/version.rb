@@ -14,6 +14,7 @@
 
 module Zeus
   class APIClient
-    VERSION = "0.1.2"
+    # package version number
+    VERSION = "0.1.3"
   end
 end

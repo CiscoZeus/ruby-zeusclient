@@ -16,30 +16,37 @@ require 'json'
 
 module Zeus
   class APIClient
+    # Wrapper for a response of REST API
     class Result
 
+      # constructor for Result class
       def initialize(response)
         @response = response
       end
 
+      # request is successed?
       def success?
         @response.code == 200 || @response.code == 201
       end
 
+      # request is error?
       def error?
         !self.success?
       end
 
+      # response code
       def code
         @response.code
       end
 
-      def data
-        JSON.parse(@response)
-      end
-
+      # response header
       def header
         @response.headers
+      end
+
+      # response body
+      def data
+        JSON.parse(@response)
       end
 
     end
