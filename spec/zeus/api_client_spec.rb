@@ -13,11 +13,66 @@
 # limitations under the License.
 
 require 'rspec'
+require 'zeus/api_client'
 
-describe 'Zeus API Client' do
+describe Zeus::APIClient do
 
-  it 'should do something' do
-
-    true.should == true
+  let (:zeus_client) do
+    Zeus::APIClient.new({
+      access_token: 'fake_access_token'
+    })
   end
+
+  describe 'Log related functions' do
+    describe '#get_logs' do
+      describe 'forwards option values correctly' do
+        context 'without any option values' do
+          it 'forwards only log name field' do
+            true.should == true
+          end
+        end
+        context 'with some option values' do
+          it 'forwards only name and given option values' do
+            true.should == true
+          end
+        end
+      end
+    end
+
+    describe '#send_logs' do
+      describe 'forwards logs correctly' do
+        it '' do
+          true.should == true
+        end
+      end
+    end
+  end
+
+  describe 'Metrics related functions' do
+    describe '#list_metrics' do
+      it '' do
+        true.should == true
+      end
+    end
+
+    describe '#send_metrics' do
+      it '' do
+        true.should == true
+      end
+    end
+
+    describe '#get_metrics' do
+      it '' do
+        true.should == true
+      end
+    end
+
+    describe '#delete_metrics' do
+      it '' do
+        true.should == true
+      end
+    end
+
+  end
+
 end

@@ -13,11 +13,10 @@
 # limitations under the License.
 
 require 'rspec'
+require 'zeus/api_client'
 
-describe 'Zeus API Client Result' do
-
-  it 'should do something' do
-
+describe Zeus::APIClient::Result do
+  it 'should have spec' do
     true.should == true
   end
 end

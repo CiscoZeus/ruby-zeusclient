@@ -27,13 +27,13 @@ module Zeus
 
     def list_metrics(regex=nil, from_date=nil, to_date=nil, aggregator=nil, group_interval=nil, filter_condition=nil, limit=nil)
       params = {}
-      params['metric_name']         = regex            if regex
-      params['from']                = from_date        if from_date
-      params['to']                  = to_date          if to_date
-      params['aggregator_function'] = aggregator       if aggregator
-      params['group_interval']      = group_interval   if group_interval
-      params['filter_condition']    = filter_condition if filter_condition
-      params['limit']               = limit            if limit
+      params.merge!(metric_name: regex)                 if regex
+      params.merge!(from: from_date)                    if from_date
+      params.merge!(to: to_date)                        if to_date
+      params.merge!(aggregator_function: aggregator)    if aggregator
+      params.merge!(group_interval: group_interval)     if group_interval
+      params.merge!(filter_condition: filter_condition) if filter_condition
+      params.merge!(limit: limit)                       if limit
       begin
         response = self.get("/metrics/#{@access_token}/_names/", params)
         Result.new(response)
@@ -54,13 +54,13 @@ module Zeus
 
     def get_metrics(regex=nil, from_date=nil, to_date=nil, aggregator=nil, group_interval=nil, filter_condition=nil, limit=nil)
       params = {}
-      params['metric_name']         = regex            if regex
-      params['from']                = from_date        if from_date
-      params['to']                  = to_date          if to_date
-      params['aggregator_function'] = aggregator       if aggregator
-      params['group_interval']      = group_interval   if group_interval
-      params['filter_condition']    = filter_condition if filter_condition
-      params['limit']               = limit            if limit
+      params.merge!(metric_name: regex)                 if regex
+      params.merge!(from: from_date)                    if from_date
+      params.merge!(to: to_date)                        if to_date
+      params.merge!(aggregator_function: aggregator)    if aggregator
+      params.merge!(group_interval: group_interval)     if group_interval
+      params.merge!(filter_condition: filter_condition) if filter_condition
+      params.merge!(limit: limit)                       if limit
       begin
         response = self.get("/metrics/#{@access_token}/_values/", params)
         Result.new(response)
@@ -86,11 +86,11 @@ module Zeus
 
     def get_logs(name, pattern=nil, from_date=nil, to_date=nil, offset=nil, limit=nil)
       params = {log_name: name}  # required fields
-      params['pattern'] = pattern   if pattern
-      params['from']    = from_date if from_date
-      params['to']      = to_date   if to_date
-      params['offset']  = offset    if offset
-      params['limit']   = limit     if limit
+      params.merge!(pattern: pattern) if pattern
+      params.merge!(from: from_date)  if from_date
+      params.merge!(to: to_date)      if to_date
+      params.merge!(offset: offset)   if offset
+      params.merge!(limit: limit)     if limit
       begin
         response = self.get("/logs/#{@access_token}", params)
         Result.new(response)
