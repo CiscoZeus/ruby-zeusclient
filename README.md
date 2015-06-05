@@ -1,4 +1,4 @@
-# Ruby Zeus Client
+# Ruby Zeus Client [![license](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 ![Alt text](/icons/zeus-logo.png?raw=true "Zeus Logo")
 
