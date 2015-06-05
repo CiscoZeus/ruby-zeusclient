@@ -45,6 +45,14 @@ p result.success?  # true
 p result.data      # => {}
 ```
 
+Push Metric
+```ruby
+result = zeus_client.send_metrics([{point: {value: 1, ...}}, ...])
+p result.code      # 200
+p result.success?  # true
+p result.data      # => {}
+```
+
 Delete metric
 ```ruby
 result = zeus_client.delete_metrics()
