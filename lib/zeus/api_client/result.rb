@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'json'
+
 module Zeus
   class APIClient
     class Result
@@ -26,6 +28,10 @@ module Zeus
 
       def error?
         !self.success?
+      end
+
+      def code
+        @response.code
       end
 
       def data
