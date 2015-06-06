@@ -1,4 +1,4 @@
-# Ruby Zeus Client [![license](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+# Ruby Zeus Client [![license](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0) [![Build Status](https://travis-ci.org/CiscoZeus/ruby-zeusclient.svg)](https://travis-ci.org/CiscoZeus/ruby-zeusclient)
 
 ![Alt text](https://github.com/CiscoZeus/ruby-zeusclient/blob/master/icons/zeus-logo.png?raw=true "Zeus Logo")
 
