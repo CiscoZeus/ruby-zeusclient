@@ -128,7 +128,6 @@ module Zeus
 
     def enable_alerts(alert_id_array)
       params = {id: alert_id_array}
-      p params
       begin
         response = post("/alerts/#{@access_token}/enable", params)
         Result.new(response)
@@ -143,7 +142,6 @@ module Zeus
 
     def disable_alerts(alert_id_array)
       params = {id: alert_id_array}
-      p params
       begin
         response = post("/alerts/#{@access_token}/disable", params)
         Result.new(response)
