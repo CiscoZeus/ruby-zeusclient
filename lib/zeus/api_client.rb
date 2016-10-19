@@ -12,14 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'rest-client'
-require 'zeus/api_client/result'
-require 'zeus/api_client/version'
+require 'zeus/api_client/alerts_interface'
+require 'zeus/api_client/metrics_interface'
+require 'zeus/api_client/logs_interface'
+require 'zeus/api_client/trigalerts_interface'
 
 module Zeus
 
   # API Client for Zeus Service
   class APIClient
+    include AlertsInterface, MetricsInterface,
+            LogsInterface, TrigalertsInterface
 
     # constructor for Zeus::APIClient
     # @param       [Hash] opts the options to create z Zeus::APIClient instance
@@ -27,138 +30,7 @@ module Zeus
     # @option opts [String] :endpoint The base url for API endpoint
     def initialize(opts={})
       @access_token = opts[:access_token]
-      @endpoint = opts[:endpoint] || "http://api.ciscozeus.io"
+      @endpoint = opts[:endpoint] || "https://api.ciscozeus.io"
     end
-
-    # Get metrics list
-    # @param [String] regex a factor for filtering by metrics name. For example, metric.name, metric.name*, metric.name.* etc.
-    # @param [String] from_date a factor for filtering by start timestamp
-    # @param [String] to_date a factor for filtering by end timestamp
-    # @param [String] aggregator an aggregation methods
-    # @param [String] group_interval grouping values by time interval. For example, 1000s, 100m, 10h, 1d , 1w
-    # @param [String] filter_condition a factor for filtering by metrics name
-    # @param [String] limit a maximum number of returning values
-    # @return [Zeus::APIClient::Result]
-    def list_metrics(regex=nil, from_date=nil, to_date=nil, aggregator=nil, group_interval=nil, filter_condition=nil, limit=nil)
-      params = {}
-      params.merge!(metric_name: regex)                 if regex
-      params.merge!(from: from_date)                    if from_date
-      params.merge!(to: to_date)                        if to_date
-      params.merge!(aggregator_function: aggregator)    if aggregator
-      params.merge!(group_interval: group_interval)     if group_interval
-      params.merge!(filter_condition: filter_condition) if filter_condition
-      params.merge!(limit: limit)                       if limit
-      begin
-        response = get("/metrics/#{@access_token}/_names/", params)
-        Result.new(response)
-      rescue => e
-        Result.new(e.response)
-      end
-    end
-
-    # Send metrics list
-    # @param [String] name a name of metrics. For example, metric.name, metric.name*, metric.name.* etc.
-    # @param [Array] metrics a list of hash objects
-    # @return [Zeus::APIClient::Result]
-    def send_metrics(name, metrics)
-      params = {metrics: metrics}
-      begin
-        response = post("/metrics/#{@access_token}/#{name}/", params)
-        Result.new(response)
-      rescue => e
-        Result.new(e.response)
-      end
-    end
-
-    # Get metrics
-    # @param [String] regex a factor for filtering by metrics name
-    # @param [String] from_date a factor for filtering by start timestamp
-    # @param [String] to_date a factor for filtering by end timestamp
-    # @param [String] aggregator an aggregation methods
-    # @param [String] group_interval grouping values by time interval. For example, 1000s, 100m, 10h, 1d , 1w
-    # @param [String] filter_condition filters to be applied to metric values. For example, "column1 > 0", "column1 > 50 AND column2 = 10"
-    # @param [Integer] limit a maximum number of returning values
-    # @return [Zeus::APIClient::Result]
-    def get_metrics(regex=nil, from_date=nil, to_date=nil, aggregator=nil, group_interval=nil, filter_condition=nil, limit=nil)
-      params = {}
-      params.merge!(metric_name: regex)                 if regex
-      params.merge!(from: from_date)                    if from_date
-      params.merge!(to: to_date)                        if to_date
-      params.merge!(aggregator_function: aggregator)    if aggregator
-      params.merge!(group_interval: group_interval)     if group_interval
-      params.merge!(filter_condition: filter_condition) if filter_condition
-      params.merge!(limit: limit)                       if limit
-      begin
-        response = get("/metrics/#{@access_token}/_values/", params)
-        Result.new(response)
-      rescue => e
-        Result.new(e.response)
-      end
-    end
-
-    # delete metrics
-    # @param [String] name a target metrics name
-    # @return [Zeus::APIClient::Result]
-    def delete_metrics(name)
-      response = delete("/metrics/#{@access_token}/#{name}/")
-      Result.new(response)
-    end
-
-    # send logs
-    # @param [String] name a log name
-    # @param [Array] logs a list of hash objects
-    # @return [Zeus::APIClient::Result]
-    def send_logs(name, logs)
-      params = {logs:logs}
-      begin
-        response = post("/logs/#{@access_token}/#{name}/", params)
-        Result.new(response)
-      rescue => e
-        Result.new(e.response)
-      end
-    end
-
-    # get logs
-    # @param [String] name a log name
-    # @param [String] attribute_name Name of the attribute within the log to be searched.
-    # @param [String] pattern a factor for filtering by name
-    # @param [String] from_date a factor for filtering by start timestamp
-    # @param [String] to_date a factor for filtering by end timestamp
-    # @param [Integer] offset a factor for filtering by metrics name
-    # @param [Integer] limit a maximum number of returning values
-    # @return [Zeus::APIClient::Result]
-    def get_logs(name, attribute_name=nil, pattern=nil, from_date=nil, to_date=nil, offset=nil, limit=nil)
-      params = {log_name: name}  # required fields
-      params.merge!(attribute_name: attribute_name) if attribute_name
-      params.merge!(pattern: pattern) if pattern
-      params.merge!(from: from_date)  if from_date
-      params.merge!(to: to_date)      if to_date
-      params.merge!(offset: offset)   if offset
-      params.merge!(limit: limit)     if limit
-      begin
-        response = get("/logs/#{@access_token}", params)
-        Result.new(response)
-      rescue => e
-        Result.new(e.response)
-      end
-    end
-
-    private
-    def get(path, params={})
-      RestClient.get "#{@endpoint}#{path}", {params: params}
-    end
-
-    def post(path, data={})
-      RestClient.post "#{@endpoint}#{path}", data.to_json, :content_type => :json, :accept => :json
-    end
-
-    def put(path, data={})
-      RestClient.put "#{@endpoint}#{path}", data.to_json, :content_type => :json, :accept => :json
-    end
-
-    def delete(path={})
-      RestClient.delete "#{@endpoint}#{path}"
-    end
-
   end
 end
