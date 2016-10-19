@@ -13,9 +13,9 @@
 # limitations under the License.
 
 require 'rspec'
-require 'zeus/api_client'
+require 'zeus/api_client/result'
 
-describe Zeus::APIClient::Result do
+describe Zeus::Result do
   it 'should have spec' do
     expect(true).to eq true
   end
