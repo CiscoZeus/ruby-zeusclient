@@ -19,7 +19,8 @@ describe Zeus::APIClient do
 
   let (:zeus_client) do
     Zeus::APIClient.new({
-      access_token: 'fake_access_token'
+      access_token: 'fake_access_token',
+      endpoint: 'luke.skywalker.com'
     })
   end
 
