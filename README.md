@@ -83,6 +83,67 @@ p result.success?  # true
 p result.data      # => {}
 ```
 
+Get alerts
+
+```ruby
+result = zeus_client.get_alerts()
+p result.code      # 200
+p result.success?  # true
+p result.data      # => {}
+```
+
+Create alert
+
+```ruby
+result = zeus_client.create_alert(alert_name, username, token, alerts_type, alert_expression, alert_severity, metric_name, emails, status, frequency)
+p result.code      # 201
+p result.success?  # true
+p result.data      # => {}
+```
+
+Modify alert
+
+```ruby
+result = zeus_client.modify_alert(alert_id, alert_name, username, token, alerts_type, alert_expression, alert_severity, metric_name, emails, status, frequency)
+p result.code      # 200
+p result.success?  # true
+p result.data      # => {}
+```
+
+Delete alert
+
+```ruby
+result = zeus_client.delete_alert(alert_id)
+p result.code      # 204
+p result.success?  # true
+p result.data      # => {}
+```
+
+Get triggered alerts
+
+```ruby
+result = zeus_client.get_triggered_alerts()
+p result.code      # 200
+p result.success?  # true
+p result.data      # => {}
+Get triggered alerts
+```
+
+Get triggered alerts in the last 24 hours
+
+```ruby
+result = zeus_client.get_triggered_alerts_last_24_hours()
+p result.code      # 200
+p result.success?  # true
+p result.data      # => {}
+```
+
+
+
+
+
+
+
 For more details, refer to [this documentation](http://www.rubydoc.info/github/CiscoZeus/ruby-zeusclient/)
 
 ## Development
