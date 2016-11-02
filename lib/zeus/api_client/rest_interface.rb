@@ -10,8 +10,8 @@ module RestInterface
     RestClient.post "#{@endpoint}#{path}", data.to_json, :content_type => :json, :accept => :json
   end
 
-  def put(path, data={})
-    RestClient.put "#{@endpoint}#{path}", data.to_json, :content_type => :json, :accept => :json
+  def put(path, params={})
+    RestClient.put "#{@endpoint}#{path}", {params: params}
   end
 
   def delete(path={})
