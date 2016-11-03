@@ -136,13 +136,7 @@ result = zeus_client.get_triggered_alerts_last_24_hours()
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
-```
-
-
-
-
-
-
+```     
 
 For more details, refer to [this documentation](http://www.rubydoc.info/github/CiscoZeus/ruby-zeusclient/)
 
