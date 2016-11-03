@@ -30,7 +30,10 @@ module Zeus
     # @option opts [String] :endpoint The base url for API endpoint
     def initialize(opts={})
       @access_token = opts[:access_token]
-      @endpoint = opts[:endpoint] || "https://api.ciscozeus.io"
+      # makes sure its using https
+      uri_parts = URI.split(opts[:endpoint])
+      uri_parts[0] = "https://"
+      @endpoint = uri_parts.join
     end
   end
 end

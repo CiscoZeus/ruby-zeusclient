@@ -19,8 +19,50 @@ describe Zeus::APIClient do
 
   let (:zeus_client) do
     Zeus::APIClient.new({
-      access_token: 'fake_access_token'
+      access_token: 'fake_access_token',
+      endpoint: 'luke.skywalker.com'
     })
+  end
+
+  describe '#initialize' do
+    context 'endpoint starts with http' do
+      it 'replace http to https' do
+        fake_zeus_client = Zeus::APIClient.new(
+          {
+            access_token: 'fake_access_token',
+            endpoint: 'http://fake-ciscozeus.io'
+          }
+        )
+        expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq(
+          'https://fake-ciscozeus.io'
+        )
+      end
+    end
+    context 'endpoint starts with https' do
+      it 'stays as https' do
+        fake_zeus_client = Zeus::APIClient.new(
+          {
+            access_token: 'fake_access_token',
+            endpoint: 'https://fake-ciscozeus.io'
+          }
+        )
+        expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq(
+          'https://fake-ciscozeus.io'
+        )
+      end
+    end
+    context 'endpoint without protocol' do
+      it 'add https to the start of the url' do
+        fake_zeus_client = Zeus::APIClient.new(
+          {
+            access_token: 'fake_access_token',
+            endpoint: 'fake-ciscozeus.io'
+        })
+        expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq(
+          'https://fake-ciscozeus.io'
+        )
+      end
+    end
   end
 
   describe 'Log' do
