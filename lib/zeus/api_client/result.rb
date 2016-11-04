@@ -15,8 +15,8 @@
 require 'json'
 
 module Zeus
+  # Wrapper to interface with return values from the api
   class Result
-
     # constructor for Result class
     def initialize(response)
       @response = response
@@ -29,7 +29,7 @@ module Zeus
 
     # request is error?
     def error?
-      !self.success?
+      !success?
     end
 
     # response code
@@ -46,6 +46,5 @@ module Zeus
     def data
       JSON.parse(@response)
     end
-
   end
 end

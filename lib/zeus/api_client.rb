@@ -18,7 +18,6 @@ require 'zeus/api_client/logs_interface'
 require 'zeus/api_client/trigalerts_interface'
 
 module Zeus
-
   # API Client for Zeus Service
   class APIClient
     include AlertsInterface, MetricsInterface,
@@ -28,11 +27,11 @@ module Zeus
     # @param       [Hash] opts the options to create z Zeus::APIClient instance
     # @option opts [String] :access_token The tokens for Zeus Service
     # @option opts [String] :endpoint The base url for API endpoint
-    def initialize(opts={})
+    def initialize(opts = {})
       @access_token = opts[:access_token]
       # makes sure its using https
       uri_parts = URI.split(opts[:endpoint])
-      uri_parts[0] = "https://"
+      uri_parts[0] = 'https://'
       @endpoint = uri_parts.join
     end
   end
