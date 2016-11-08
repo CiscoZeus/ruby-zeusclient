@@ -6,16 +6,17 @@ module Zeus
     include RestInterface
 
     # create alert
-    # @param [String]  alert_name name of the alert
-    # @param [String]  username account username
-    # @param [String]  token account token
-    # @param [String]  alerts_type alert type, metrics or logs
-    # @param [String]  alert_expression expression to evaluate the alert
-    # @param [String]  alert_severity severity level of the alert
-    # @param [String]  metric_name <TODO add description>
-    # @param [String]  emails recipients to receive notifications
-    # @param [String]  status if the alerts is enabled or not
-    # @param [Integer] frequency <TODO add description>
+    # @param [Hash]  alert_data must contain:
+    #   @param [String]  alert_name name of the alert
+    #   @param [String]  username account username
+    #   @param [String]  token account token
+    #   @param [String]  alert_type alert type, metrics or logs
+    #   @param [String]  alert_expression expression to evaluate the alert
+    #   @param [String]  alert_severity severity level of the alert
+    #   @param [String]  field_name name of the field related to the alert
+    #   @param [String]  emails recipients to receive notifications
+    #   @param [String]  status if the alerts is enabled or not
+    #   @param [Integer] notify_period frequency of notifications
     # @return [Zeus::APIClient::Result]
 
     def create_alert(
@@ -45,16 +46,16 @@ module Zeus
 
     # modify alert
     # @param [Integer] alert_id id of the alert to be modified
-    # @param [String]  alert_name name of the alert
-    # @param [String]  username account username
-    # @param [String]  token account token
-    # @param [String]  alerts_type alert type, metrics or logs
-    # @param [String]  alert_expression expression to evaluate the alert
-    # @param [String]  alert_severity severity level of the alert
-    # @param [String]  metric_name <TODO add description>
-    # @param [String]  emails recipients to receive notifications
-    # @param [String]  status if the alerts is enabled or not
-    # @param [Integer] frequency <TODO add description>
+    # @param [Hash]  alert_data must contain:
+    #   @param [String]  alert_name name of the alert
+    #   @param [String]  username account username
+    #   @param [String]  token account token
+    #   Optional params:
+    #   @param [String]  alerts_type alert type, metrics or logs
+    #   @param [String]  alert_severity severity level of the alert
+    #   @param [String]  emails recipients to receive notifications
+    #   @param [String]  status if the alerts is enabled or not
+    #   @param [Integer] notify_period frequency of notifications
     # @return [Zeus::APIClient::Result]
 
     def modify_alert(

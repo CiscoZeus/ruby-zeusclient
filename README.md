@@ -95,7 +95,22 @@ p result.data      # => {}
 Create alert
 
 ```ruby
-result = zeus_client.create_alert(alert_name, username, token, alerts_type, alert_expression, alert_severity, metric_name, emails, status, frequency)
+
+result = zeus_client.create_alert(
+  {
+    alert_name: "name of the alert",
+    username: "username associated with alert",
+    alert_expression: "cpu.value > 80", # expression to match alert against
+    # optional params
+    alerts_type: "metrics", # Either metric or log
+    alert_severity: "S1", # severity of the alert, S1-S5
+    field_name: "name of the field associated with the alert",
+    emails: "email@provider.com", # email to be notified when alert triggers
+    status: "active", # either active or disabled
+    notify_period: 60, # frequency of notifications
+  }
+)
+
 p result.code      # 201
 p result.success?  # true
 p result.data      # => {}
@@ -104,7 +119,20 @@ p result.data      # => {}
 Modify alert
 
 ```ruby
-result = zeus_client.modify_alert(alert_id, alert_name, username, token, alerts_type, alert_expression, alert_severity, metric_name, emails, status, frequency)
+
+result = zeus_client.modify_alert(
+  alert_id,
+  {
+    # parameter you wish to modify
+    alert_name: "name of the alert",
+    username: "username associated with alert",
+    alerts_type: "metric", # Either metric or log
+    alert_severity: "S1", # severity of the alert, S1-S5
+    emails: "email@provider.com", # email to be notified when alert triggers
+    status: "active", # either active or disabled
+    notify_period: 60, # frequency of notifications
+  }
+)
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -122,7 +150,7 @@ p result.data      # => {}
 Get triggered alerts
 
 ```ruby
-result = zeus_client.get_triggered_alerts()
+result = zeus_client.triggered_alerts()
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -132,11 +160,12 @@ Get triggered alerts
 Get triggered alerts in the last 24 hours
 
 ```ruby
-result = zeus_client.get_triggered_alerts_last_24_hours()
+
+result = zeus_client.triggered_alerts_last_24_hours()
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
-```     
+```
 
 For more details, refer to [this documentation](http://www.rubydoc.info/github/CiscoZeus/ruby-zeusclient/)
 
