@@ -27,7 +27,7 @@ module Zeus
     # @return [Zeus::APIClient::Result]
 
     def triggered_alerts
-      response = get("/trigalerts/#{@access_token}")
+      response = get("/triggeredalerts/#{@access_token}")
       Result.new(response)
     rescue => e
       Result.new(e.response)
@@ -37,7 +37,7 @@ module Zeus
     # @return [Zeus::APIClient::Result]
 
     def triggered_alerts_last_24_hours
-      response = get("/trigalerts/#{@access_token}/last24")
+      response = get("/triggeredalerts/#{@access_token}/last24")
       Result.new(response)
     rescue => e
       Result.new(e.response)
