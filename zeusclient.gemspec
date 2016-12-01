@@ -21,8 +21,8 @@ require 'zeus/api_client/version'
 Gem::Specification.new do |spec|
   spec.name          = "zeusclient"
   spec.version       = Zeus::APIClient::VERSION
-  spec.authors       = ["Komei Shimamura"]
-  spec.email         = ["komei.t.f@gmail.com"]
+  spec.authors       = ["CiscoZeus"]
+  spec.email         = ["info@ciscozeus.io"]
 
   if spec.respond_to?(:metadata)
     # spec.metadata['allowed_push_host'] = 'http://mygemserver.com'
