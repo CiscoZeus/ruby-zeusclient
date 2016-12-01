@@ -16,22 +16,17 @@ require 'rspec'
 require 'zeus/api_client'
 
 describe Zeus::APIClient do
-
-  let (:zeus_client) do
-    Zeus::APIClient.new({
-      access_token: 'fake_access_token',
-      endpoint: 'luke.skywalker.com'
-    })
+  let :zeus_client do
+    Zeus::APIClient.new(access_token: 'fake_access_token',
+                        endpoint: 'luke.skywalker.com')
   end
 
   describe '#initialize' do
     context 'endpoint starts with http' do
       it 'replace http to https' do
         fake_zeus_client = Zeus::APIClient.new(
-          {
-            access_token: 'fake_access_token',
-            endpoint: 'http://fake-ciscozeus.io'
-          }
+          access_token: 'fake_access_token',
+          endpoint: 'http://fake-ciscozeus.io'
         )
         expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq(
           'https://fake-ciscozeus.io'
@@ -41,10 +36,8 @@ describe Zeus::APIClient do
     context 'endpoint starts with https' do
       it 'stays as https' do
         fake_zeus_client = Zeus::APIClient.new(
-          {
-            access_token: 'fake_access_token',
-            endpoint: 'https://fake-ciscozeus.io'
-          }
+          access_token: 'fake_access_token',
+          endpoint: 'https://fake-ciscozeus.io'
         )
         expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq(
           'https://fake-ciscozeus.io'
@@ -54,10 +47,9 @@ describe Zeus::APIClient do
     context 'endpoint without protocol' do
       it 'add https to the start of the url' do
         fake_zeus_client = Zeus::APIClient.new(
-          {
-            access_token: 'fake_access_token',
-            endpoint: 'fake-ciscozeus.io'
-        })
+          access_token: 'fake_access_token',
+          endpoint: 'fake-ciscozeus.io'
+        )
         expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq(
           'https://fake-ciscozeus.io'
         )
@@ -72,7 +64,8 @@ describe Zeus::APIClient do
           it 'has only log name field' do
             mock_get = double('ApiClient::get')
             expect(zeus_client).to receive(:get).and_return(mock_get).once
-            # .with(:path => "/logs/fake_access_token/", :params => {:name => "fake_name"})
+            # .with(:path => "/logs/fake_access_token/",
+            #       :params => {:name => "fake_name"})
             zeus_client.get_logs('fake_name')
           end
         end
@@ -80,10 +73,14 @@ describe Zeus::APIClient do
           it 'has given option fields' do
             mock_get = double('ApiClient::get')
             expect(zeus_client).to receive(:get).and_return(mock_get).once
-            # .with(:path => "/logs/fake_access_token/", :params => {:name => "fake_name", ....})
-            zeus_client.get_logs(
-                'fake_name', 'fake_attribute_name', 'fake_pattern',
-                'fake_from_date', 'fake_to_date', 'fake_offset', 'fake_limit')
+            # .with(:path => "/logs/fake_access_token/",
+            #       :params => {:name => "fake_name", ....})
+            params = {
+              attribute_name: 'fake_name', pattern: 'fake_pattern',
+              from_date: 'fake_date', to_date: 'fake_date',
+              offset: 'fake_offset', limit: 'fake_limit'
+            }
+            zeus_client.get_logs('fake_name', params)
           end
         end
       end
@@ -137,7 +134,5 @@ describe Zeus::APIClient do
         zeus_client.delete_metrics('fake_name')
       end
     end
-
   end
-
 end
