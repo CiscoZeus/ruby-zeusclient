@@ -19,28 +19,33 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'zeus/api_client/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "zeusclient"
+  spec.name          = 'zeusclient'
   spec.version       = Zeus::APIClient::VERSION
-  spec.authors       = ["Komei Shimamura"]
-  spec.email         = ["komei.t.f@gmail.com"]
+  spec.authors       = ['Cisco Zeus']
+  spec.email         = ['info@ciscozeus.io']
 
   if spec.respond_to?(:metadata)
     # spec.metadata['allowed_push_host'] = 'http://mygemserver.com'
   end
 
-  spec.summary       = %q{Ruby Client for Cisco Zeus}
-  spec.description   = %q{Client for Cisco Zeus. This allows users to send and receive data to and from Cisco Zeus.}
-  spec.homepage      = "https://github.com/CiscoZeus/ruby-zeusclient"
-  spec.license       = "Apache 2.0"
+  spec.summary       = 'Ruby Client for Cisco Zeus'
+  spec.description   = 'Client for Cisco Zeus. This allows users to send'\
+                        'and receive data to and from Cisco Zeus.'
+  spec.homepage      = 'https://github.com/CiscoZeus/ruby-zeusclient'
+  spec.license       = 'Apache 2.0'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features|icons)/}) }
-  spec.bindir        = "exe"
+  spec.files         =
+    `git ls-files -z`.split("\x0").reject { |f|
+      f.match(%r{^(test|spec|features|icons)/})
+    }
+  spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency "rest-client", "~> 1.8.0"
-  spec.add_development_dependency "bundler", "~> 1.8"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0.0"
-  spec.add_development_dependency "yard", "~> 0.8.0"
+  spec.add_runtime_dependency 'rest-client', '~> 1.8.0'
+  spec.add_development_dependency 'bundler', '~> 1.8'
+  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rspec', '~> 3.0.0'
+  spec.add_development_dependency 'yard', '~> 0.8.0'
+  spec.add_development_dependency 'rubocop', '~> 0.45.0'
 end

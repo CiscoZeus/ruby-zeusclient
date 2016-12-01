@@ -1,6 +1,6 @@
-#!/usr/bin/env ruby
+# coding: utf-8
 
-# Copyright 2015 Cisco Systems, Inc.
+# Copyright 2016 Cisco Systems, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +13,28 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-require 'bundler/setup'
-require 'zeus/api_client'
+require 'rest-client'
 
-# You can add fixtures and/or initialization code here to make experimenting
-# with your gem easier. You can also use a different console, if you like.
+# Wrapper around rest-client
+module RestInterface
+  private
 
-# (If you use this, don't forget to add pry to your Gemfile!)
-# require "pry"
-# Pry.start
+  def get(path, params = {})
+    RestClient.get "#{@endpoint}#{path}", params: params
+  end
 
-require 'irb'
-IRB.start
+  def post(path, data = {})
+    RestClient.post "#{@endpoint}#{path}", data.to_json,
+                    content_type: :json, accept: :json
+  end
+
+  def put(path, params = {})
+    RestClient.put "#{@endpoint}#{path}", params: params
+  end
+
+  def delete(path = {})
+    RestClient.delete "#{@endpoint}#{path}"
+  end
+end
