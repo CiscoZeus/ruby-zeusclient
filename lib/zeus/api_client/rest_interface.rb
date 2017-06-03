@@ -21,49 +21,49 @@ require 'rest-client'
 module RestInterface
   private
 
-  def get(path, params = {}, token, bucket_name)
+  def get(path, token, bucket_name, params = {})
     if bucket_name.nil?
       RestClient.get "#{@endpoint}#{path}", params: params,
-                     Authorization: "Bearer #{token}"
+                                            Authorization: "Bearer #{token}"
     else
       RestClient.get "#{@endpoint}#{path}", params: params,
-                     Authorization: "Bearer #{token}",
-                     'Bucket-Name': bucket_name
+                                            Authorization: "Bearer #{token}",
+                                            'Bucket-Name' => bucket_name
     end
   end
 
-  def post(path, data = {}, token, bucket_name)
+  def post(path, token, bucket_name, params = {})
     if bucket_name.nil?
-      RestClient.post "#{@endpoint}#{path}", data.to_json,
+      RestClient.post "#{@endpoint}#{path}", params.to_json,
                       content_type: :json, accept: :json,
                       Authorization: "Bearer #{token}"
     else
-      RestClient.post "#{@endpoint}#{path}", data.to_json,
+      RestClient.post "#{@endpoint}#{path}", params.to_json,
                       content_type: :json, accept: :json,
                       Authorization: "Bearer #{token}",
-                      'Bucket-Name': bucket_name
+                      'Bucket-Name' => bucket_name
     end
   end
 
-  def put(path, params = {}, token, bucket_name)
+  def put(path, token, bucket_name, params = {})
     if bucket_name.nil?
       RestClient.put "#{@endpoint}#{path}", params: params,
-                     Authorization: "Bearer #{token}"
+                                            Authorization: "Bearer #{token}"
     else
       RestClient.put "#{@endpoint}#{path}", params: params,
-                     Authorization: "Bearer #{token}",
-                     'Bucket-Name': bucket_name
+                                            Authorization: "Bearer #{token}",
+                                            'Bucket-Name' => bucket_name
     end
   end
 
-  def delete(path = {}, token, bucket_name)
+  def delete(path, token, bucket_name)
     if bucket_name.nil?
       RestClient.delete "#{@endpoint}#{path}",
                         Authorization: "Bearer #{token}"
     else
       RestClient.delete "#{@endpoint}#{path}",
                         Authorization: "Bearer #{token}",
-                        'Bucket-Name': bucket_name
+                        'Bucket-Name' => bucket_name
     end
   end
 end

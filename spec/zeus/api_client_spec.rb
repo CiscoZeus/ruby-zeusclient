@@ -18,8 +18,8 @@ require 'zeus/api_client'
 describe Zeus::APIClient do
   let :zeus_client do
     Zeus::APIClient.new(
-        token: 'fake_token',
-        endpoint: 'luke.skywalker.com'
+      token: 'fake_token',
+      endpoint: 'luke.skywalker.com'
     )
   end
 
@@ -27,8 +27,8 @@ describe Zeus::APIClient do
     context 'endpoint starts with http' do
       it 'replace http to https' do
         fake_zeus_client = Zeus::APIClient.new(
-            token: 'fake_token',
-            endpoint: 'http://fake-ciscozeus.io'
+          token: 'fake_token',
+          endpoint: 'http://fake-ciscozeus.io'
         )
         expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
       end
@@ -36,8 +36,8 @@ describe Zeus::APIClient do
     context 'endpoint starts with http (use user token and org_name/bucket_name)' do
       it 'replace http to https' do
         fake_zeus_client = Zeus::APIClient.new(
-            token: 'fake_token',
-            endpoint: 'http://fake-ciscozeus.io'
+          token: 'fake_token',
+          endpoint: 'http://fake-ciscozeus.io'
         ).bucket('fake_org/fake_bucket')
         expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
       end
@@ -45,8 +45,8 @@ describe Zeus::APIClient do
     context 'endpoint starts with https' do
       it 'stays as https' do
         fake_zeus_client = Zeus::APIClient.new(
-            token: 'fake_token',
-            endpoint: 'https://fake-ciscozeus.io'
+          token: 'fake_token',
+          endpoint: 'https://fake-ciscozeus.io'
         )
         expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
       end
@@ -54,8 +54,8 @@ describe Zeus::APIClient do
     context 'endpoint starts with https (use user token and org_name/bucket_name)' do
       it 'stays as https' do
         fake_zeus_client = Zeus::APIClient.new(
-            token: 'fake_token',
-            endpoint: 'https://fake-ciscozeus.io'
+          token: 'fake_token',
+          endpoint: 'https://fake-ciscozeus.io'
         ).bucket('fake_org/fake_bucket')
         expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
       end
@@ -63,8 +63,8 @@ describe Zeus::APIClient do
     context 'endpoint without protocol' do
       it 'add https to the start of the url' do
         fake_zeus_client = Zeus::APIClient.new(
-            token: 'fake_token',
-            endpoint: 'fake-ciscozeus.io'
+          token: 'fake_token',
+          endpoint: 'fake-ciscozeus.io'
         )
         expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
       end
@@ -72,8 +72,8 @@ describe Zeus::APIClient do
     context 'endpoint without protocol (use user token and org_name/bucket_name)' do
       it 'add https to the start of the url' do
         fake_zeus_client = Zeus::APIClient.new(
-            token: 'fake_token',
-            endpoint: 'fake-ciscozeus.io'
+          token: 'fake_token',
+          endpoint: 'fake-ciscozeus.io'
         ).bucket('fake_org/fake_bucket')
         expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
       end
@@ -108,9 +108,9 @@ describe Zeus::APIClient do
             # .with(:path => "/logs/fake_token/",
             #       :params => {:name => "fake_name", ....})
             params = {
-                attribute_name: 'fake_name', pattern: 'fake_pattern',
-                from_date: 'fake_date', to_date: 'fake_date',
-                offset: 'fake_offset', limit: 'fake_limit'
+              attribute_name: 'fake_name', pattern: 'fake_pattern',
+              from_date: 'fake_date', to_date: 'fake_date',
+              offset: 'fake_offset', limit: 'fake_limit'
             }
             zeus_client.get_logs('fake_name', params)
           end
@@ -122,9 +122,9 @@ describe Zeus::APIClient do
             # .with(:path => "/logs/fake_token/",
             #       :params => {:name => "fake_name", ....})
             params = {
-                attribute_name: 'fake_name', pattern: 'fake_pattern',
-                from_date: 'fake_date', to_date: 'fake_date',
-                offset: 'fake_offset', limit: 'fake_limit'
+              attribute_name: 'fake_name', pattern: 'fake_pattern',
+              from_date: 'fake_date', to_date: 'fake_date',
+              offset: 'fake_offset', limit: 'fake_limit'
             }
             zeus_client.bucket('fake_org/fake_bucket').get_logs('fake_name', params)
           end

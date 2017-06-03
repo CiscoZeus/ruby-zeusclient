@@ -39,7 +39,7 @@ module Zeus
 
     def create_alert(alert_data)
       alert_data[:token] = @token
-      response = post("/alerts/#{@token}", alert_data, @token, @bucket_name)
+      response = post("/alerts/#{@token}", @token, @bucket_name, alert_data)
       @bucket_name = nil
       Result.new(response)
     rescue => e
@@ -64,7 +64,7 @@ module Zeus
 
     def modify_alert(alert_id, alert_data)
       alert_data[:token] = @token
-      response = put("/alerts/#{@token}/#{alert_id}", alert_data, @token, @bucket_name)
+      response = put("/alerts/#{@token}/#{alert_id}", @token, @bucket_name, alert_data)
       @bucket_name = nil
       Result.new(response)
     rescue => e
@@ -78,7 +78,7 @@ module Zeus
     def get_alerts(metric = nil)
       params = { metric: metric }
       begin
-        response = get("/alerts/#{@token}", params, @token, @bucket_name)
+        response = get("/alerts/#{@token}", @token, @bucket_name, params)
         @bucket_name = nil
         Result.new(response)
       rescue => e
@@ -117,7 +117,7 @@ module Zeus
     def enable_alerts(alert_id_array)
       params = { id: alert_id_array }
       begin
-        response = post("/alerts/#{@token}/enable", params, @token, @bucket_name)
+        response = post("/alerts/#{@token}/enable", @token, @bucket_name, params)
         @bucket_name = nil
         Result.new(response)
       rescue => e
@@ -132,7 +132,7 @@ module Zeus
     def disable_alerts(alert_id_array)
       params = { id: alert_id_array }
       begin
-        response = post("/alerts/#{@token}/disable", params, @token, @bucket_name)
+        response = post("/alerts/#{@token}/disable", @token, @bucket_name, params)
         @bucket_name = nil
         Result.new(response)
       rescue => e

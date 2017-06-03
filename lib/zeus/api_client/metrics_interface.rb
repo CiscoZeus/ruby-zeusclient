@@ -34,7 +34,7 @@ module Zeus
     #   @param [String] limit a maximum number of returning values
     # @return [Zeus::APIClient::Result]
     def list_metrics(options = {})
-      response = get("/metrics/#{@token}/_names/", options, @token, @bucket_name)
+      response = get("/metrics/#{@token}/_names/", @token, @bucket_name, options)
       @bucket_name = nil
       Result.new(response)
     rescue => e
@@ -49,7 +49,7 @@ module Zeus
     def send_metrics(name, metrics)
       params = { metrics: metrics }
       begin
-        response = post("/metrics/#{@token}/#{name}/", params, @token, @bucket_name)
+        response = post("/metrics/#{@token}/#{name}/", @token, @bucket_name, params)
         @bucket_name = nil
         Result.new(response)
       rescue => e
@@ -70,7 +70,7 @@ module Zeus
     #   @param [Integer] limit a maximum number of returning values
     # @return [Zeus::APIClient::Result]
     def get_metrics(options = {})
-      response = get("/metrics/#{@token}/_values/", options, @token, @bucket_name)
+      response = get("/metrics/#{@token}/_values/", @token, @bucket_name, options)
       @bucket_name = nil
       Result.new(response)
     rescue => e
