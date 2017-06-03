@@ -28,7 +28,8 @@ module Zeus
     def send_logs(name, logs)
       params = { logs: logs }
       begin
-        response = post("/logs/#{@access_token}/#{name}/", params)
+        response = post("/logs/#{@token}/#{name}/", params, @token, @bucket_name)
+        @bucket_name = nil
         Result.new(response)
       rescue => e
         Result.new(e.response)
@@ -48,7 +49,8 @@ module Zeus
     # @return [Zeus::APIClient::Result]
     def get_logs(name, options = {})
       options[:log_name] = name
-      response = get("/logs/#{@access_token}", options)
+      response = get("/logs/#{@token}", options, @token, @bucket_name)
+      @bucket_name = nil
       Result.new(response)
     rescue => e
       Result.new(e.response)
