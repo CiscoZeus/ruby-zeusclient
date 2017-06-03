@@ -21,20 +21,49 @@ require 'rest-client'
 module RestInterface
   private
 
-  def get(path, params = {})
-    RestClient.get "#{@endpoint}#{path}", params: params
+  def get(path, params = {}, token, bucket_name)
+    if bucket_name.nil?
+      RestClient.get "#{@endpoint}#{path}", params: params,
+                     Authorization: "Bearer #{token}"
+    else
+      RestClient.get "#{@endpoint}#{path}", params: params,
+                     Authorization: "Bearer #{token}",
+                     'Bucket-Name': bucket_name
+    end
   end
 
-  def post(path, data = {})
-    RestClient.post "#{@endpoint}#{path}", data.to_json,
-                    content_type: :json, accept: :json
+  def post(path, data = {}, token, bucket_name)
+    if bucket_name.nil?
+      RestClient.post "#{@endpoint}#{path}", data.to_json,
+                      content_type: :json, accept: :json,
+                      Authorization: "Bearer #{token}"
+    else
+      RestClient.post "#{@endpoint}#{path}", data.to_json,
+                      content_type: :json, accept: :json,
+                      Authorization: "Bearer #{token}",
+                      'Bucket-Name': bucket_name
+    end
   end
 
-  def put(path, params = {})
-    RestClient.put "#{@endpoint}#{path}", params: params
+  def put(path, params = {}, token, bucket_name)
+    if bucket_name.nil?
+      RestClient.put "#{@endpoint}#{path}", params: params,
+                     Authorization: "Bearer #{token}"
+    else
+      RestClient.put "#{@endpoint}#{path}", params: params,
+                     Authorization: "Bearer #{token}",
+                     'Bucket-Name': bucket_name
+    end
   end
 
-  def delete(path = {})
-    RestClient.delete "#{@endpoint}#{path}"
+  def delete(path = {}, token, bucket_name)
+    if bucket_name.nil?
+      RestClient.delete "#{@endpoint}#{path}",
+                        Authorization: "Bearer #{token}"
+    else
+      RestClient.delete "#{@endpoint}#{path}",
+                        Authorization: "Bearer #{token}",
+                        'Bucket-Name': bucket_name
+    end
   end
 end
