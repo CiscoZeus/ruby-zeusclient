@@ -25,14 +25,19 @@ module Zeus
 
     # constructor for Zeus::APIClient
     # @param       [Hash] opts the options to create z Zeus::APIClient instance
-    # @option opts [String] :access_token The tokens for Zeus Service
+    # @option opts [String] :token The tokens (user token or access token) for Zeus Service
     # @option opts [String] :endpoint The base url for API endpoint
     def initialize(opts = {})
-      @access_token = opts[:access_token]
+      @token = opts[:token]
       # makes sure its using https
       uri_parts = URI.split(opts[:endpoint])
       uri_parts[0] = 'https://'
       @endpoint = uri_parts.join
+    end
+
+    def bucket(bucket_fullname)
+      @bucket_name = bucket_fullname
+      self
     end
   end
 end
