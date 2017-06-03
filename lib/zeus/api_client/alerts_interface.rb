@@ -38,8 +38,9 @@ module Zeus
     # @return [Zeus::APIClient::Result]
 
     def create_alert(alert_data)
-      alert_data[:token] = @access_token
-      response = post("/alerts/#{@access_token}", alert_data)
+      alert_data[:token] = @token
+      response = post("/alerts/#{@token}", alert_data, @token, @bucket_name)
+      @bucket_name = nil
       Result.new(response)
     rescue => e
       Result.new(e.response)
@@ -62,8 +63,9 @@ module Zeus
     # @return [Zeus::APIClient::Result]
 
     def modify_alert(alert_id, alert_data)
-      alert_data[:token] = @access_token
-      response = put("/alerts/#{@access_token}/#{alert_id}", alert_data)
+      alert_data[:token] = @token
+      response = put("/alerts/#{@token}/#{alert_id}", alert_data, @token, @bucket_name)
+      @bucket_name = nil
       Result.new(response)
     rescue => e
       Result.new(e.response)
@@ -76,7 +78,8 @@ module Zeus
     def get_alerts(metric = nil)
       params = { metric: metric }
       begin
-        response = get("/alerts/#{@access_token}", params)
+        response = get("/alerts/#{@token}", params, @token, @bucket_name)
+        @bucket_name = nil
         Result.new(response)
       rescue => e
         Result.new(e.response)
@@ -88,7 +91,8 @@ module Zeus
     # @return [Zeus::APIClient::Result]
 
     def get_alert(alert_id)
-      response = get("/alerts/#{@access_token}/#{alert_id}")
+      response = get("/alerts/#{@token}/#{alert_id}", @token, @bucket_name)
+      @bucket_name = nil
       Result.new(response)
     rescue => e
       Result.new(e.response)
@@ -99,7 +103,8 @@ module Zeus
     # @return [Zeus::APIClient::Result]
 
     def delete_alert(alert_id)
-      response = delete("/alerts/#{@access_token}/#{alert_id}")
+      response = delete("/alerts/#{@token}/#{alert_id}", @token, @bucket_name)
+      @bucket_name = nil
       Result.new(response)
     rescue => e
       Result.new(e.response)
@@ -112,7 +117,8 @@ module Zeus
     def enable_alerts(alert_id_array)
       params = { id: alert_id_array }
       begin
-        response = post("/alerts/#{@access_token}/enable", params)
+        response = post("/alerts/#{@token}/enable", params, @token, @bucket_name)
+        @bucket_name = nil
         Result.new(response)
       rescue => e
         Result.new(e.response)
@@ -126,7 +132,8 @@ module Zeus
     def disable_alerts(alert_id_array)
       params = { id: alert_id_array }
       begin
-        response = post("/alerts/#{@access_token}/disable", params)
+        response = post("/alerts/#{@token}/disable", params, @token, @bucket_name)
+        @bucket_name = nil
         Result.new(response)
       rescue => e
         Result.new(e.response)
