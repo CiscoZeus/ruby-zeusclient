@@ -22,7 +22,7 @@ module Zeus
   module MetricsClient
     include RestClient
     # Get metrics list
-    # @param [Hash]  options can contain:
+    # @param [Hash]  params can contain:
     #   @param [String] regex a factor for filtering by metrics name.
     #                   eg: metric.name, metric.name*, metric.name.* etc.
     #   @param [String] from_date a factor for filtering by start timestamp
@@ -33,10 +33,10 @@ module Zeus
     #   @param [String] filter_condition a factor for filtering by metrics name
     #   @param [String] limit a maximum number of returning values
     # @return [Zeus::APIClient::Result]
-    def list_metrics(options = {})
+    def list_metrics(params = {})
       response = get("/metrics/#{@token}/_names/",
                      make_header(@token, @bucket_name),
-                     options)
+                     params)
       @bucket_name = nil
       Result.new(response)
     rescue RestClient::RequestFailed => e
@@ -62,7 +62,7 @@ module Zeus
     end
 
     # Get metrics
-    # @param [Hash]  options can contain:
+    # @param [Hash]  params can contain:
     #   @param [String] regex a factor for filtering by metrics name
     #   @param [String] from_date a factor for filtering by start timestamp
     #   @param [String] to_date a factor for filtering by end timestamp
@@ -73,10 +73,10 @@ module Zeus
     #                   eg: "column1 > 0", "column1 > 50 AND column2 = 10"
     #   @param [Integer] limit a maximum number of returning values
     # @return [Zeus::APIClient::Result]
-    def get_metrics(options = {})
+    def get_metrics(params = {})
       response = get("/metrics/#{@token}/_values/",
                      make_header(@token, @bucket_name),
-                     options)
+                     params)
       @bucket_name = nil
       Result.new(response)
     rescue RestClient::RequestFailed => e

@@ -21,7 +21,8 @@ require 'rest-client'
 module RestClient
   private
 
-  def get(path, headers, _params = {})
+  def get(path, headers, params = {})
+    headers = params.merge(headers)
     RestClient.get "#{@endpoint}#{path}", headers
   end
 

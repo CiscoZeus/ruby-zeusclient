@@ -40,7 +40,7 @@ module Zeus
 
     # get logs
     # @param [String] name a log name
-    # @param [Hash]  options can contain:
+    # @param [Hash]  params can contain:
     #   @param [String] attribute_name Name of the attribute within
     #                                     the log to be searched.
     #   @param [String] pattern a factor for filtering by name
@@ -49,12 +49,12 @@ module Zeus
     #   @param [Integer] offset a factor for filtering by metrics name
     #   @param [Integer] limit a maximum number of returning values
     # @return [Zeus::APIClient::Result]
-    def get_logs(name, options = {})
-      options[:log_name] = name
+    def get_logs(name, params = {})
+      params[:log_name] = name
       response = get("/logs/#{@token}",
                      { Authorization: "Bearer #{@token}",
                        :'Bucket-Name' => @bucket_name },
-                     options)
+                     params)
       @bucket_name = nil
       Result.new(response)
     rescue RestClient::RequestFailed => e
