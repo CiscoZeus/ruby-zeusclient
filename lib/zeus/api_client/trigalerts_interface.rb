@@ -15,22 +15,23 @@
 # limitations under the License.
 #
 
-require 'zeus/api_client/rest_interface'
+require 'zeus/api_client/rest_client'
 require 'zeus/api_client/result'
 
 module Zeus
   # Interface for dealing with triggered alerts api calls
-  module TrigalertsInterface
-    include RestInterface
+  module TrigalertsClient
+    include RestClient
 
     # get triggered alerts
     # @return [Zeus::APIClient::Result]
 
     def triggered_alerts
-      response = get("/triggeredalerts/#{@token}", @token, @bucket_name)
+      response = get("/triggeredalerts/#{@token}",
+                     make_header(@token, @bucket_name))
       @bucket_name = nil
       Result.new(response)
-    rescue => e
+    rescue RestClient::RequestFailed => e
       Result.new(e.response)
     end
 
@@ -38,10 +39,11 @@ module Zeus
     # @return [Zeus::APIClient::Result]
 
     def triggered_alerts_last_24_hours
-      response = get("/triggeredalerts/#{@token}/last24", @token, @bucket_name)
+      response = get("/triggeredalerts/#{@token}/last24",
+                     make_header(@token, @bucket_name))
       @bucket_name = nil
       Result.new(response)
-    rescue => e
+    rescue RestClient::RequestFailed => e
       Result.new(e.response)
     end
   end
