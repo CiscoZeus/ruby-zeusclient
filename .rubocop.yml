@@ -10,5 +10,5 @@
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives.
 # URISchemes: http, https
 Metrics/LineLength:
-  Max: 120
+  Max: 90
 
