@@ -30,7 +30,9 @@ describe Zeus::APIClient do
           token: 'fake_token',
           endpoint: 'http://fake-ciscozeus.io'
         )
-        expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
+        expect(
+          fake_zeus_client.instance_variable_get(:@endpoint)
+        ).to eq('https://fake-ciscozeus.io')
       end
     end
     context 'endpoint starts with http (use user token and org_name/bucket_name)' do
@@ -39,7 +41,9 @@ describe Zeus::APIClient do
           token: 'fake_token',
           endpoint: 'http://fake-ciscozeus.io'
         ).bucket('fake_org/fake_bucket')
-        expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
+        expect(
+          fake_zeus_client.instance_variable_get(:@endpoint)
+        ).to eq('https://fake-ciscozeus.io')
       end
     end
     context 'endpoint starts with https' do
@@ -48,7 +52,9 @@ describe Zeus::APIClient do
           token: 'fake_token',
           endpoint: 'https://fake-ciscozeus.io'
         )
-        expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
+        expect(
+          fake_zeus_client.instance_variable_get(:@endpoint)
+        ).to eq('https://fake-ciscozeus.io')
       end
     end
     context 'endpoint starts with https (use user token and org_name/bucket_name)' do
@@ -57,7 +63,9 @@ describe Zeus::APIClient do
           token: 'fake_token',
           endpoint: 'https://fake-ciscozeus.io'
         ).bucket('fake_org/fake_bucket')
-        expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
+        expect(
+          fake_zeus_client.instance_variable_get(:@endpoint)
+        ).to eq('https://fake-ciscozeus.io')
       end
     end
     context 'endpoint without protocol' do
@@ -66,7 +74,9 @@ describe Zeus::APIClient do
           token: 'fake_token',
           endpoint: 'fake-ciscozeus.io'
         )
-        expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
+        expect(
+          fake_zeus_client.instance_variable_get(:@endpoint)
+        ).to eq('https://fake-ciscozeus.io')
       end
     end
     context 'endpoint without protocol (use user token and org_name/bucket_name)' do
@@ -75,7 +85,9 @@ describe Zeus::APIClient do
           token: 'fake_token',
           endpoint: 'fake-ciscozeus.io'
         ).bucket('fake_org/fake_bucket')
-        expect(fake_zeus_client.instance_variable_get(:@endpoint)).to eq('https://fake-ciscozeus.io')
+        expect(
+          fake_zeus_client.instance_variable_get(:@endpoint)
+        ).to eq('https://fake-ciscozeus.io')
       end
     end
   end
