@@ -14,13 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'zeus/api_client/rest_interface'
+require 'zeus/api_client/rest_client'
 require 'zeus/api_client/result'
 
 module Zeus
   # Interface for dealing with metrics api calls
-  module MetricsInterface
-    include RestInterface
+  module MetricsClient
+    include RestClient
     # Get metrics list
     # @param [Hash]  options can contain:
     #   @param [String] regex a factor for filtering by metrics name.
@@ -34,10 +34,12 @@ module Zeus
     #   @param [String] limit a maximum number of returning values
     # @return [Zeus::APIClient::Result]
     def list_metrics(options = {})
-      response = get("/metrics/#{@token}/_names/", @token, @bucket_name, options)
+      response = get("/metrics/#{@token}/_names/",
+                     make_header(@token, @bucket_name),
+                     options)
       @bucket_name = nil
       Result.new(response)
-    rescue => e
+    rescue RestClient::RequestFailed => e
       Result.new(e.response)
     end
 
@@ -49,7 +51,9 @@ module Zeus
     def send_metrics(name, metrics)
       params = { metrics: metrics }
       begin
-        response = post("/metrics/#{@token}/#{name}/", @token, @bucket_name, params)
+        response = post("/metrics/#{@token}/#{name}/",
+                        make_header(@token, @bucket_name),
+                        params)
         @bucket_name = nil
         Result.new(response)
       rescue => e
@@ -70,10 +74,12 @@ module Zeus
     #   @param [Integer] limit a maximum number of returning values
     # @return [Zeus::APIClient::Result]
     def get_metrics(options = {})
-      response = get("/metrics/#{@token}/_values/", @token, @bucket_name, options)
+      response = get("/metrics/#{@token}/_values/",
+                     make_header(@token, @bucket_name),
+                     options)
       @bucket_name = nil
       Result.new(response)
-    rescue => e
+    rescue RestClient::RequestFailed => e
       Result.new(e.response)
     end
 
@@ -81,10 +87,11 @@ module Zeus
     # @param [String] name a target metrics name
     # @return [Zeus::APIClient::Result]
     def delete_metrics(name)
-      response = delete("/metrics/#{@token}/#{name}/", @token, @bucket_name)
+      response = delete("/metrics/#{@token}/#{name}/",
+                        make_header(@token, @bucket_name))
       @bucket_name = nil
       Result.new(response)
-    rescue => e
+    rescue RestClient::RequestFailed => e
       Result.new(e.response)
     end
   end
