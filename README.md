@@ -25,41 +25,28 @@ Or install it yourself as:
 ```ruby
 require 'zeus/api_client'
 zeus_client = Zeus::APIClient.new({
-    :token => "your_token_here",
-    :endpoint => "zeus_endpoint_here"
+    token: "your_token_here",
+    endpoint: "zeus_endpoint_here"
 })
+```
+
+Since version 0.3.2 Zeus support either user token + full bucket name (org_name/bucket_name) or access token
+For using user token + full bucket name (org_name/bucket_name), please add `bucket("bucket_fullname")` to the method chain, for example:
+```ruby
+result = zeus_client.bucket("your_org_name/your_bucket_name").list_metrics(
+# your parameters here
+)
+```
+
+If you just use access token, just use the method you need directly, for example:
+```ruby
+result = zeus_client.list_metrics()
 ```
 
 List All Metrics
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").list_metrics(
-  # optional parameters
-  {
-    regex: "metric.name*" # regex for filtering metrics names
-    from_date: "2016-06-12", # YYYY-MM-DD
-    to_date: "2017-12-20", # YYYY-MM-DD
-    aggregator_function: "sum", # Aggregator function to be applied to the metric values.
-                                # Available options. count, min, max, sum, mean, mode, median
-    group_interval: "100m",     # Interval for grouping, when applying aggregations via the aggregator_function parameter.
-                                # The aggregator_function parameter must be specific for this parameter to work.
-                                # Examples: 1000s, 100m, 10h, 1d , 1w. Use 's' for seconds, 'm' for minutes, 'h' for hours,
-                                # 'd' for days and 'w' for weeks.
-    filter_condition: "column1 > 0", # Filters to be applied to metric values.
-                                     # Examples: "column1 > 0", "column1 > 50 AND column2 = 10".
-    offset: 100,
-    limit: 10
-  }
-)
-p result.code      # 200
-p result.success?  # true
-p result.data      # => {}
-```
-If you use access token:
-
-```ruby
-result = zeus_client.list_metrics(
   # optional parameters
   {
     regex: "metric.name*" # regex for filtering metrics names
@@ -84,16 +71,8 @@ p result.data      # => {}
 
 Get Metric
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").get_metrics( # same optional arguments as list_metrics)
-p result.code      # 200
-p result.success?  # true
-p result.data      # => {}
-```
-If you use access token:
-```ruby
-result = zeus_client.get_metrics( # same optional arguments as list_metrics)
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -101,16 +80,8 @@ p result.data      # => {}
 
 Push Metric
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").send_metrics([{point: {value: 1, ...}}, ...])
-p result.code      # 200
-p result.success?  # true
-p result.data      # => {}
-```
-If you use access token:
-```ruby
-result = zeus_client.send_metrics([{point: {value: 1, ...}}, ...])
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -118,16 +89,8 @@ p result.data      # => {}
 
 Delete metric
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").delete_metrics()
-p result.code      # 200
-p result.success?  # true
-p result.data      # => {}
-```
-If you use access token:
-```ruby
-result = zeus_client.delete_metrics()
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -135,27 +98,8 @@ p result.data      # => {}
 
 Get logs
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").get_logs(
-  "log_name_here",
-  #optional parameters
-  {
-    attribute_name: "cpu", # name of the attribute within the log to be searched
-    pattern: "memory.*", # a pattern for name filtering
-    from_date: "2016-06-12", # YYYY-MM-DD
-    to_date: "2017-12-20", # YYYY-MM-DD
-    offset: 200,
-    limit: 10
-  }
-)
-p result.code      # 200
-p result.success?  # true
-p result.data      # => {}
-```
-If you use access token:
-```ruby
-result = zeus_client.get_logs(
   "log_name_here",
   #optional parameters
   {
@@ -174,16 +118,8 @@ p result.data      # => {}
 
 Push logs
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").send_logs([{},{}, ...])
-p result.code      # 200
-p result.success?  # true
-p result.data      # => {}
-```
-If you use access token:
-```ruby
-result = zeus_client.send_logs([{},{}, ...])
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -191,16 +127,8 @@ p result.data      # => {}
 
 Get alerts
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").get_alerts()
-p result.code      # 200
-p result.success?  # true
-p result.data      # => {}
-```
-If you use access token:
-```ruby
-result = zeus_client.get_alerts()
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -208,29 +136,8 @@ p result.data      # => {}
 
 Create alert
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").create_alert(
-  {
-    alert_name: "name of the alert",
-    username: "username associated with alert",
-    alert_expression: "cpu.value > 80", # expression to match alert against
-    # optional params
-    alerts_type: "metrics", # Either metric or log
-    alert_severity: "S1", # severity of the alert, S1-S5
-    metric_name: "name of the metrics associated with the alert",
-    emails: "email@provider.com", # email to be notified when alert triggers
-    status: "active", # either active or disabled
-    frequency: 60, # frequency for alert to be checked
-  }
-)
-p result.code      # 201
-p result.success?  # true
-p result.data      # => {}
-```
-If you use access token:
-```ruby
-result = zeus_client.create_alert(
   {
     alert_name: "name of the alert",
     username: "username associated with alert",
@@ -251,30 +158,8 @@ p result.data      # => {}
 
 Modify alert
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").modify_alert(
-  alert_id,
-  {
-    # parameter you wish to modify
-    alert_name: "name of the alert",
-    username: "username associated with alert",
-    alert_expression: "cpu.value > 80", # expression to match alert against
-    alerts_type: "metric", # Either metric or log
-    alert_severity: "S1", # severity of the alert, S1-S5
-    metric_name: "name of the metrics associated with the alert",
-    emails: "email@provider.com", # email to be notified when alert triggers
-    status: "active", # either active or disabled
-    frequency: 60, # frequency for alert to be checked
-  }
-)
-p result.code      # 200
-p result.success?  # true
-p result.data      # => {}
-```
-If you use access token:
-```ruby
-result = zeus_client.modify_alert(
   alert_id,
   {
     # parameter you wish to modify
@@ -296,34 +181,17 @@ p result.data      # => {}
 
 Delete alert
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").delete_alert(alert_id)
 p result.code      # 204
 p result.success?  # true
 p result.data      # => {}
 ```
-If you use access token:
-```ruby
-result = zeus_client.delete_alert(alert_id)
-p result.code      # 204
-p result.success?  # true
-p result.data      # => {}
-```
 
 Get triggered alerts
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").triggered_alerts()
-p result.code      # 200
-p result.success?  # true
-p result.data      # => {}
-Get triggered alerts
-```
-If you use access token:
-```ruby
-result = zeus_client.triggered_alerts()
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -332,16 +200,8 @@ Get triggered alerts
 
 Get triggered alerts in the last 24 hours
 
-If you use user token + `org_name/bucket_name`:
 ```ruby
 result = zeus_client.bucket("your_org_name/your_bucket_name").triggered_alerts_last_24_hours()
-p result.code      # 200
-p result.success?  # true
-p result.data      # => {}
-```
-If you use access token:
-```ruby
-result = zeus_client.triggered_alerts_last_24_hours()
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
