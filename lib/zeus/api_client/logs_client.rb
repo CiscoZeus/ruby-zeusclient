@@ -14,13 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'zeus/api_client/rest_interface'
+require 'zeus/api_client/rest_client'
 require 'zeus/api_client/result'
 
 module Zeus
   # Interface for dealing with logs api calls
-  module LogsInterface
-    include RestInterface
+  module LogsClient
+    include RestClient
     # send logs
     # @param [String] name a log name
     # @param [Array] logs a list of hash objects
@@ -28,7 +28,10 @@ module Zeus
     def send_logs(name, logs)
       params = { logs: logs }
       begin
-        response = post("/logs/#{@access_token}/#{name}/", params)
+        response = post("/logs/#{@token}/#{name}/",
+                        make_header(@token, @bucket_name),
+                        params)
+        @bucket_name = nil
         Result.new(response)
       rescue => e
         Result.new(e.response)
@@ -37,7 +40,7 @@ module Zeus
 
     # get logs
     # @param [String] name a log name
-    # @param [Hash]  options can contain:
+    # @param [Hash]  params can contain:
     #   @param [String] attribute_name Name of the attribute within
     #                                     the log to be searched.
     #   @param [String] pattern a factor for filtering by name
@@ -46,11 +49,15 @@ module Zeus
     #   @param [Integer] offset a factor for filtering by metrics name
     #   @param [Integer] limit a maximum number of returning values
     # @return [Zeus::APIClient::Result]
-    def get_logs(name, options = {})
-      options[:log_name] = name
-      response = get("/logs/#{@access_token}", options)
+    def get_logs(name, params = {})
+      params[:log_name] = name
+      response = get("/logs/#{@token}",
+                     { Authorization: "Bearer #{@token}",
+                       :'Bucket-Name' => @bucket_name },
+                     params)
+      @bucket_name = nil
       Result.new(response)
-    rescue => e
+    rescue RestClient::RequestFailed => e
       Result.new(e.response)
     end
   end

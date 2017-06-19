@@ -15,13 +15,13 @@
 # limitations under the License.
 #
 
-require 'zeus/api_client/rest_interface'
+require 'zeus/api_client/rest_client'
 require 'zeus/api_client/result'
 
 module Zeus
   # Interface for dealing with alerts api calls
-  module AlertsInterface
-    include RestInterface
+  module AlertsClient
+    include RestClient
 
     # create alert
     # @param [Hash]  alert_data must contain:
@@ -38,10 +38,13 @@ module Zeus
     # @return [Zeus::APIClient::Result]
 
     def create_alert(alert_data)
-      alert_data[:token] = @access_token
-      response = post("/alerts/#{@access_token}", alert_data)
+      alert_data[:token] = @token
+      response = post("/alerts/#{@token}",
+                      make_header(@token, @bucket_name),
+                      alert_data)
+      @bucket_name = nil
       Result.new(response)
-    rescue => e
+    rescue RestClient::RequestFailed => e
       Result.new(e.response)
     end
 
@@ -60,12 +63,14 @@ module Zeus
     #   @param [String]  status if the alerts is enabled or not
     #   @param [Integer] frequency <TODO add description>
     # @return [Zeus::APIClient::Result]
-
     def modify_alert(alert_id, alert_data)
-      alert_data[:token] = @access_token
-      response = put("/alerts/#{@access_token}/#{alert_id}", alert_data)
+      alert_data[:token] = @token
+      response = put("/alerts/#{@token}/#{alert_id}",
+                     make_header(@token, @bucket_name),
+                     alert_data)
+      @bucket_name = nil
       Result.new(response)
-    rescue => e
+    rescue RestClient::RequestFailed => e
       Result.new(e.response)
     end
 
@@ -76,9 +81,12 @@ module Zeus
     def get_alerts(metric = nil)
       params = { metric: metric }
       begin
-        response = get("/alerts/#{@access_token}", params)
+        response = get("/alerts/#{@token}",
+                       make_header(@token, @bucket_name),
+                       params)
+        @bucket_name = nil
         Result.new(response)
-      rescue => e
+      rescue RestClient::RequestFailed => e
         Result.new(e.response)
       end
     end
@@ -88,9 +96,11 @@ module Zeus
     # @return [Zeus::APIClient::Result]
 
     def get_alert(alert_id)
-      response = get("/alerts/#{@access_token}/#{alert_id}")
+      response = get("/alerts/#{@token}/#{alert_id}",
+                     make_header(@token, @bucket_name))
+      @bucket_name = nil
       Result.new(response)
-    rescue => e
+    rescue RestClient::RequestFailed => e
       Result.new(e.response)
     end
 
@@ -99,9 +109,11 @@ module Zeus
     # @return [Zeus::APIClient::Result]
 
     def delete_alert(alert_id)
-      response = delete("/alerts/#{@access_token}/#{alert_id}")
+      response = delete("/alerts/#{@token}/#{alert_id}",
+                        make_header(@token, @bucket_name))
+      @bucket_name = nil
       Result.new(response)
-    rescue => e
+    rescue RestClient::RequestFailed => e
       Result.new(e.response)
     end
 
@@ -112,9 +124,12 @@ module Zeus
     def enable_alerts(alert_id_array)
       params = { id: alert_id_array }
       begin
-        response = post("/alerts/#{@access_token}/enable", params)
+        response = post("/alerts/#{@token}/enable",
+                        make_header(@token, @bucket_name),
+                        params)
+        @bucket_name = nil
         Result.new(response)
-      rescue => e
+      rescue RestClient::RequestFailed => e
         Result.new(e.response)
       end
     end
@@ -126,9 +141,12 @@ module Zeus
     def disable_alerts(alert_id_array)
       params = { id: alert_id_array }
       begin
-        response = post("/alerts/#{@access_token}/disable", params)
+        response = post("/alerts/#{@token}/disable",
+                        make_header(@token, @bucket_name),
+                        params)
+        @bucket_name = nil
         Result.new(response)
-      rescue => e
+      rescue RestClient::RequestFailed => e
         Result.new(e.response)
       end
     end

@@ -12,27 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'zeus/api_client/alerts_interface'
-require 'zeus/api_client/metrics_interface'
-require 'zeus/api_client/logs_interface'
-require 'zeus/api_client/trigalerts_interface'
+require 'zeus/api_client/alerts_client'
+require 'zeus/api_client/metrics_client'
+require 'zeus/api_client/logs_client'
+require 'zeus/api_client/trigalerts_client'
 
 module Zeus
   # API Client for Zeus Service
   class APIClient
-    include AlertsInterface, MetricsInterface,
-            LogsInterface, TrigalertsInterface
+    include AlertsClient, MetricsClient,
+            LogsClient, TrigalertsClient
 
     # constructor for Zeus::APIClient
     # @param       [Hash] opts the options to create z Zeus::APIClient instance
-    # @option opts [String] :access_token The tokens for Zeus Service
+    # @option opts [String] :token The tokens (user token/access token) for Zeus Service
     # @option opts [String] :endpoint The base url for API endpoint
     def initialize(opts = {})
-      @access_token = opts[:access_token]
+      @token = opts[:token]
       # makes sure its using https
       uri_parts = URI.split(opts[:endpoint])
       uri_parts[0] = 'https://'
       @endpoint = uri_parts.join
+    end
+
+    def bucket(bucket_fullname)
+      @bucket_name = bucket_fullname
+      self
     end
   end
 end

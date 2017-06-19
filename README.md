@@ -25,15 +25,28 @@ Or install it yourself as:
 ```ruby
 require 'zeus/api_client'
 zeus_client = Zeus::APIClient.new({
-    :access_token => "your_token_here",
-    :endpoint => "zeus_endpoint_here"
+    token: "your_token_here",
+    endpoint: "zeus_endpoint_here"
 })
+```
+
+Since version 0.3.2 Zeus support either user token + full bucket name (org_name/bucket_name) or access token
+For using user token + full bucket name (org_name/bucket_name), please add `bucket("bucket_fullname")` to the method chain, for example:
+```ruby
+result = zeus_client.bucket("your_org_name/your_bucket_name").list_metrics(
+# your parameters here
+)
+```
+
+If you just use access token, just use the method you need directly, for example:
+```ruby
+result = zeus_client.list_metrics()
 ```
 
 List All Metrics
 
 ```ruby
-result = zeus_client.list_metrics(
+result = zeus_client.bucket("your_org_name/your_bucket_name").list_metrics(
   # optional parameters
   {
     regex: "metric.name*" # regex for filtering metrics names
@@ -59,7 +72,7 @@ p result.data      # => {}
 Get Metric
 
 ```ruby
-result = zeus_client.get_metrics( # same optional arguments as list_metrics)
+result = zeus_client.bucket("your_org_name/your_bucket_name").get_metrics( # same optional arguments as list_metrics)
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -68,7 +81,7 @@ p result.data      # => {}
 Push Metric
 
 ```ruby
-result = zeus_client.send_metrics([{point: {value: 1, ...}}, ...])
+result = zeus_client.bucket("your_org_name/your_bucket_name").send_metrics([{point: {value: 1, ...}}, ...])
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -77,7 +90,7 @@ p result.data      # => {}
 Delete metric
 
 ```ruby
-result = zeus_client.delete_metrics()
+result = zeus_client.bucket("your_org_name/your_bucket_name").delete_metrics()
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -86,7 +99,7 @@ p result.data      # => {}
 Get logs
 
 ```ruby
-result = zeus_client.get_logs(
+result = zeus_client.bucket("your_org_name/your_bucket_name").get_logs(
   "log_name_here",
   #optional parameters
   {
@@ -106,7 +119,7 @@ p result.data      # => {}
 Push logs
 
 ```ruby
-result = zeus_client.send_logs([{},{}, ...])
+result = zeus_client.bucket("your_org_name/your_bucket_name").send_logs([{},{}, ...])
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -115,7 +128,7 @@ p result.data      # => {}
 Get alerts
 
 ```ruby
-result = zeus_client.get_alerts()
+result = zeus_client.bucket("your_org_name/your_bucket_name").get_alerts()
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -124,7 +137,7 @@ p result.data      # => {}
 Create alert
 
 ```ruby
-result = zeus_client.create_alert(
+result = zeus_client.bucket("your_org_name/your_bucket_name").create_alert(
   {
     alert_name: "name of the alert",
     username: "username associated with alert",
@@ -146,7 +159,7 @@ p result.data      # => {}
 Modify alert
 
 ```ruby
-result = zeus_client.modify_alert(
+result = zeus_client.bucket("your_org_name/your_bucket_name").modify_alert(
   alert_id,
   {
     # parameter you wish to modify
@@ -169,7 +182,7 @@ p result.data      # => {}
 Delete alert
 
 ```ruby
-result = zeus_client.delete_alert(alert_id)
+result = zeus_client.bucket("your_org_name/your_bucket_name").delete_alert(alert_id)
 p result.code      # 204
 p result.success?  # true
 p result.data      # => {}
@@ -178,7 +191,7 @@ p result.data      # => {}
 Get triggered alerts
 
 ```ruby
-result = zeus_client.triggered_alerts()
+result = zeus_client.bucket("your_org_name/your_bucket_name").triggered_alerts()
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -188,7 +201,7 @@ Get triggered alerts
 Get triggered alerts in the last 24 hours
 
 ```ruby
-result = zeus_client.triggered_alerts_last_24_hours()
+result = zeus_client.bucket("your_org_name/your_bucket_name").triggered_alerts_last_24_hours()
 p result.code      # 200
 p result.success?  # true
 p result.data      # => {}
@@ -201,6 +214,8 @@ For more details, refer to [this documentation](http://www.rubydoc.info/github/C
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+
+For development, we are using ruby 2.4.1.
 
 ## Contributing
 
